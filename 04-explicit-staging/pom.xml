@@ -1,0 +1,142 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>com.sonatype.training.nxs301</groupId>
+  <artifactId>04-explicit-staging</artifactId>
+  <version>1.0.0-SNAPSHOT</version>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+    <clm.serverUrl>http://localhost:8070</clm.serverUrl>
+    <clm.serverId>nexus</clm.serverId>
+    <clm.applicationId>401kapp</clm.applicationId>
+    <clm.additionalScopes>test,provided,system</clm.additionalScopes>
+    <clm.stage>build</clm.stage>
+    <!--clm-maven-plugin-version>2.4.2</clm-maven-plugin-version-->
+    <clm-maven-plugin-version>2.7.0-01</clm-maven-plugin-version>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>3.8.1</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>commons-collections</groupId>
+      <artifactId>commons-collections</artifactId>
+      <version>3.2.1</version>
+    </dependency>
+    <dependency>
+      <groupId>commons-fileupload</groupId>
+      <artifactId>commons-fileupload</artifactId>
+      <version>1.0</version>
+    </dependency>
+    <dependency>
+      <groupId>jstl</groupId>
+      <artifactId>jstl</artifactId>
+      <version>1.2</version>
+    </dependency>
+    <dependency>
+      <groupId>struts</groupId>
+      <artifactId>struts</artifactId>
+      <version>1.2.9</version>
+    </dependency>
+    <dependency>
+      <groupId>xalan</groupId>
+      <artifactId>xalan</artifactId>
+      <version>2.5.1</version>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-core</artifactId>
+      <version>4.0.5.RELEASE</version>
+    </dependency>
+  </dependencies>
+
+
+
+  <!-- deploy snapshots to a normal maven snapshot repository -->
+  <distributionManagement>
+    <snapshotRepository>
+      <id>nexus</id>
+      <url>http://localhost:8082/nexus/content/repositories/snapshots</url>
+    </snapshotRepository>
+  </distributionManagement>
+
+
+  <!-- deploy releases to the nexus staging repository	 -->
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.sonatype.plugins</groupId>
+        <artifactId>nexus-staging-maven-plugin</artifactId>
+        <version>1.6.8</version>
+        <extensions>true</extensions>
+        <configuration>
+          <serverId>nexus</serverId>
+          <nexusUrl>http://localhost:8082/nexus/</nexusUrl>
+          <!-- update this to the correct id! -->
+          <stagingProfileId>1e1f3da74797c</stagingProfileId>
+          <!--stagingProfileId>12e7f7ddf2659</stagingProfileId-->
+          <buildPromotionProfileId>1e3b8325f14ba</buildPromotionProfileId>
+          <autoReleaseAfterClose>false</autoReleaseAfterClose>
+          <skipStagingRepositoryClose>false</skipStagingRepositoryClose>
+          <tags>
+            <localUsername>${env.USER}</localUsername>
+            <javaVersion>${java.version}</javaVersion>
+          </tags>
+        </configuration>
+      </plugin>
+
+      <!-- for CLM -->
+      
+      <!-- do the scan in the maven build context -->
+      <plugin>
+        <groupId>com.sonatype.clm</groupId>
+        <artifactId>clm-maven-plugin</artifactId>
+        <version>${clm-maven-plugin-version}</version>
+        <executions>
+          <execution>
+            <phase>verify</phase>
+            <goals>
+              <goal>evaluate</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+      <!-- so the dependencies show up in Jenkins -->
+      <plugin>
+        <groupId>com.sonatype.clm</groupId>
+        <artifactId>clm-maven-plugin</artifactId>
+        <version>${clm-maven-plugin-version}</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>index</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      
+      <!-- so the dependencies get passed to Nexus Repo Staging -->
+      <plugin>
+        <groupId>com.sonatype.clm</groupId>
+        <artifactId>clm-maven-plugin</artifactId>
+        <version>${clm-maven-plugin-version}</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>attach</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+
+</project>
