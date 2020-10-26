@@ -53,3 +53,16 @@ uploadArchives {
 task wrapper( type: Wrapper, description: "create a gradlew" ) {
     gradleVersion = '2.0'
 }
+
+task copyDependencies(type: Copy) {
+   from configurations.runtime
+   into "$buildDir/dependencies"
+}
+
+ext.iqScanDir = 'build/libs'
+task copyCompileDependencies(type: Copy) {
+    into iqScanDir
+    from configurations.compile
+}
+
+jar.dependsOn 'copyCompileDependencies'
