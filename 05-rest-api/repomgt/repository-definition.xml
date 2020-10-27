@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<repository>
+  <data>
+    <id>my-releases-xml</id>
+    <name>MyReleasesXml</name>
+    <exposed>true</exposed>
+    <repoType>hosted</repoType>
+    <repoPolicy>RELEASE</repoPolicy>
+    <providerRole>org.sonatype.nexus.proxy.repository.Repository</providerRole>
+    <provider>maven2</provider>
+    <format>maven2</format>
+  </data>
+</repository>

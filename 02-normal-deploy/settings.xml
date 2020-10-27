@@ -1,0 +1,89 @@
+<settings>
+
+  <localRepository>./target/repo</localRepository>
+
+  <mirrors>
+    <mirror> <!--Send all requests to the public group -->
+      <id>nexus</id>
+      <mirrorOf>*</mirrorOf>
+      <!--
+      <url>http://localhost:8881/repository/maven-central</url>
+      <url>http://localhost:8082/nexus/content/groups/public</url>
+      <url>http://localhost:8083/nexus/repository/maven-public</url>
+      <url>http://localhost:8081/nexus/repository/maven-public-s3rver</url>
+      <url>http://localhost:8081/nexus/repository/maven-public-localstack</url>
+      -->
+      <url>http://localhost:8081/nexus/repository/maven-public-s3ninja</url>
+
+      <!-- ####################################################################################### -->
+
+      <!--
+      <url>http://localhost:8083/nexus/repository/maven-public</url>
+      -->
+    </mirror>
+  </mirrors>
+  <activeProfiles>
+    <!--make the profile active all the time -->
+    <activeProfile>nexus</activeProfile>
+  </activeProfiles>
+  <profiles>
+    <profile>
+      <id>nexus</id>
+      <!--Override the repository (and pluginRepository) "central" from the Maven Super POM
+          to activate snapshots for both! -->
+      <repositories>
+        <repository>
+          <id>central</id>
+          <url>http://central</url>
+          <releases>
+            <enabled>true</enabled>
+          </releases>
+          <snapshots>
+            <enabled>false</enabled>
+          </snapshots>
+        </repository>
+      </repositories>
+      <pluginRepositories>
+        <pluginRepository>
+          <id>central</id>
+          <url>http://central</url>
+          <releases>
+            <enabled>true</enabled>
+          </releases>
+          <snapshots>
+            <enabled>true</enabled>
+          </snapshots>
+        </pluginRepository>
+      </pluginRepositories>
+    </profile>
+  </profiles>
+
+  <pluginGroups>
+    <pluginGroup>org.sonatype.plugins</pluginGroup>
+    <pluginGroup>com.sonatype.clm</pluginGroup>
+    <pluginGroup>org.jenkins-ci.tools</pluginGroup>
+  </pluginGroups>
+
+  <servers>
+    <server>
+      <id>nexus</id>
+      <username>admin</username>
+      <password>admin123</password>
+    </server>
+    <server>
+      <id>nexus-training</id>
+      <username>admin</username>
+      <password>admin123</password>
+    </server>
+    <server>
+      <id>nexus-deployment</id>
+      <username>deployment</username>
+      <password>deployment123</password>
+    </server>
+    <server>
+      <id>nexusstaging</id>
+      <username>nexusstaging</username>
+      <password>nexusstaging123</password>
+    </server>
+  </servers>
+</settings>

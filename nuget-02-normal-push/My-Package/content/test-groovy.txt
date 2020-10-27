@@ -1,0 +1,46 @@
+import org.apache.commons.httpclient.methods.*
+
+//build.setDescription("foobar")
+//System.out.println("hello world\n")
+//out.print("hello logger\n" + build.getWorkspace().getName() + "\n")
+//envVars = build.getEnvironment(hudson.model.TaskListener.NULL)
+//envVars.each { k, v -> System.out.println("$k: $v") }
+
+workspace = build.getEnvironment(hudson.model.TaskListener.NULL)["WORKSPACE"]
+fileName = "pom.xml"
+file = new File(workspace + File.separator + fileName)
+
+//fp = new hudson.FilePath(file)
+//System.out.println(fp.readToString())
+
+//restClient = new groovyx.net.http.RESTClient('http://192.168.1.6:8082/nexus/content/sites/site-internal/')
+
+//restClient.auth.basic 'username', 'password'
+//restClient.encoder.'application/zip' = this.&encodeZipFile
+//def encodeZipFile(Object data) throws UnsupportedEncodingException {
+//    def entity = new FileEntity((File) data, 'application/zip');
+//    entity.setContentType('application/zip');
+//    return entity
+//}
+
+//response = restClient.put(path: 'foo-1.0.pom',
+//      body: file
+//) 
+
+//System.out.println("Response: " + response)
+
+
+//new groovyx.net.http.HTTPBuilder("http://www.google.com")
+
+//v = new URL("http://www.google.com") //.getText()
+//v = new URL("http://192.168.1.6:8082/nexus/content/sites/site-internal/").getText()
+
+//System.out.println("V: " + v) 
+
+
+
+
+
+
+put = new org.apache.commons.httpclient.methods.PutMethod("http://192.168.1.6:8082/nexus/content/sites/site-internal/foo-1.0.pom")
+put.setRequestEntity(new InputStreamRequestEntity(new FileInputStream(file)))

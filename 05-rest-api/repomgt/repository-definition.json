@@ -1,0 +1,12 @@
+{
+	data: {
+	"id": "my-releases-json",
+	"name": "MyReleasesJson",
+	"exposed": true,
+	"repoType": "hosted",
+	"repoPolicy": "RELEASE",
+	"providerRole": "org.sonatype.nexus.proxy.repository.Repository",
+	"provider": "maven2",
+	"format": "maven2"
+	}
+}

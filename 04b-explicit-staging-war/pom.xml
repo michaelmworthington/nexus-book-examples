@@ -1,0 +1,58 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>com.sonatype.training.nxs301</groupId>
+  <artifactId>04b-explicit-staging-war</artifactId>
+  <version>1.0.0</version>
+  <packaging>war</packaging>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+
+  <distributionManagement>
+    <snapshotRepository>
+      <id>nexus</id>
+      <url>http://localhost:8081/nexus/content/repositories/snapshots</url>
+    </snapshotRepository>
+  </distributionManagement>
+
+  <dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>3.8.1</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>commons-collections</groupId>
+      <artifactId>commons-collections</artifactId>
+      <version>3.2.1</version>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.sonatype.plugins</groupId>
+        <artifactId>nexus-staging-maven-plugin</artifactId>
+        <version>1.6.5</version>
+        <extensions>true</extensions>
+        <configuration>
+          <serverId>nexus</serverId>
+          <nexusUrl>http://localhost:8082/nexus/</nexusUrl>
+          <!-- update this to the correct id! -->
+          <stagingProfileId>1e1f3da74797c</stagingProfileId>
+          <buildPromotionProfileId>1e3b8325f14ba</buildPromotionProfileId>
+          <autoReleaseAfterClose>false</autoReleaseAfterClose>
+          <tags>
+            <localUsername>${env.USER}</localUsername>
+            <javaVersion>${java.version}</javaVersion>
+          </tags>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+</project>

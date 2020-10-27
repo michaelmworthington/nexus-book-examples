@@ -4,18 +4,18 @@
 
   <groupId>com.sonatype.training.nxs301</groupId>
   <artifactId>04-explicit-staging</artifactId>
-  <version>1.0.1</version>
+  <version>1.0.0-SNAPSHOT</version>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-    <clm.serverUrl>http://host.docker.internal:8060/iq/</clm.serverUrl>
+    <clm.serverUrl>http://localhost:8060</clm.serverUrl>
     <clm.serverId>nexus</clm.serverId>
-    <clm.applicationId>04-explicit-staging-maven-plugin</clm.applicationId>
+    <clm.applicationId>401kapp</clm.applicationId>
     <clm.additionalScopes>test,provided,system</clm.additionalScopes>
     <clm.stage>build</clm.stage>
     <!--clm-maven-plugin-version>2.4.2</clm-maven-plugin-version-->
-    <clm-maven-plugin-version>2.7.0-01</clm-maven-plugin-version>
+    <clm-maven-plugin-version>2.5.1-01</clm-maven-plugin-version>
   </properties>
 
   <dependencies>
@@ -63,7 +63,7 @@
   <distributionManagement>
     <snapshotRepository>
       <id>nexus</id>
-      <url>http://host.docker.internal:8082/nexus/content/repositories/snapshots</url>
+      <url>http://localhost:8082/nexus/content/repositories/snapshots</url>
     </snapshotRepository>
   </distributionManagement>
 
@@ -74,17 +74,16 @@
       <plugin>
         <groupId>org.sonatype.plugins</groupId>
         <artifactId>nexus-staging-maven-plugin</artifactId>
-        <version>1.6.8</version>
+        <version>1.6.7</version>
         <extensions>true</extensions>
         <configuration>
           <serverId>nexus</serverId>
-          <nexusUrl>http://host.docker.internal:8082/nexus/</nexusUrl>
+          <nexusUrl>http://localhost:8082/nexus/</nexusUrl>
           <!-- update this to the correct id! -->
           <stagingProfileId>1e1f3da74797c</stagingProfileId>
           <!--stagingProfileId>12e7f7ddf2659</stagingProfileId-->
           <buildPromotionProfileId>1e3b8325f14ba</buildPromotionProfileId>
           <autoReleaseAfterClose>false</autoReleaseAfterClose>
-          <skipStagingRepositoryClose>false</skipStagingRepositoryClose>
           <tags>
             <localUsername>${env.USER}</localUsername>
             <javaVersion>${java.version}</javaVersion>

@@ -2,20 +2,22 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>com.sonatype.training.nxs301</groupId>
-  <artifactId>04-explicit-staging</artifactId>
-  <version>1.0.1</version>
+  <parent><
+    <groupId>com.sonatype.training.nxs301</groupId>
+    <artifactId>04c-nxrm3-staging</artifactId>
+    <version>1.0.2</version>
+  </parent>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-    <clm.serverUrl>http://host.docker.internal:8060/iq/</clm.serverUrl>
+    <clm.serverUrl>http://localhost/iq/</clm.serverUrl>
     <clm.serverId>nexus</clm.serverId>
-    <clm.applicationId>04-explicit-staging-maven-plugin</clm.applicationId>
+    <clm.applicationId>04c-nxrm3-staging-maven-plugin</clm.applicationId>
     <clm.additionalScopes>test,provided,system</clm.additionalScopes>
     <clm.stage>build</clm.stage>
     <!--clm-maven-plugin-version>2.4.2</clm-maven-plugin-version-->
-    <clm-maven-plugin-version>2.7.0-01</clm-maven-plugin-version>
+    <clm-maven-plugin-version>2.13.0-02</clm-maven-plugin-version>
   </properties>
 
   <dependencies>
@@ -63,33 +65,54 @@
   <distributionManagement>
     <snapshotRepository>
       <id>nexus</id>
-      <url>http://host.docker.internal:8082/nexus/content/repositories/snapshots</url>
+      <url>http://localhost:8083/nexus/repository/maven-snapshots</url>
     </snapshotRepository>
   </distributionManagement>
 
 
-  <!-- deploy releases to the nexus staging repository	 -->
+  <!-- deploy releases to the nexus staging repository   -->
   <build>
     <plugins>
+<!-- see https://docs.sonatype.com/pages/viewpage.action?spaceKey=Nexus&title=NXRM3+Maven+Plugin+testing 
+& https://maven.apache.org/plugins/maven-deploy-plugin/faq.html#skip 
+& https://maven.apache.org/guides/mini/guide-configuring-plugins.html#Using_the_executions_Tag 
+& https://issues.sonatype.org/browse/NEXUS-19842
+& https://help.sonatype.com/integrations/nexus-and-continuous-integration/repository-manager-for-maven-plugin 
+-
+https://sonatype.slack.com/archives/CCA312YJD/p1567097551051700
+--> 
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-deploy-plugin</artifactId>
+          <configuration>
+            <skip>true</skip>
+          </configuration>
+      </plugin>
       <plugin>
         <groupId>org.sonatype.plugins</groupId>
-        <artifactId>nexus-staging-maven-plugin</artifactId>
-        <version>1.6.8</version>
+        <artifactId>nxrm3-maven-plugin</artifactId>
+        <version>1.0.2</version>
         <extensions>true</extensions>
+        <executions>
+            <execution>
+                <id>default-deploy</id>
+                <phase>deploy</phase>
+                <goals>
+                    <goal>deploy</goal>
+                </goals>
+            </execution>
+        </executions>
         <configuration>
           <serverId>nexus</serverId>
-          <nexusUrl>http://host.docker.internal:8082/nexus/</nexusUrl>
+          <nexusUrl>http://localhost:8083/nexus/</nexusUrl>
           <!-- update this to the correct id! -->
-          <stagingProfileId>1e1f3da74797c</stagingProfileId>
-          <!--stagingProfileId>12e7f7ddf2659</stagingProfileId-->
-          <buildPromotionProfileId>1e3b8325f14ba</buildPromotionProfileId>
-          <autoReleaseAfterClose>false</autoReleaseAfterClose>
-          <skipStagingRepositoryClose>false</skipStagingRepositoryClose>
-          <tags>
+          <repository>maven-releases</repository>
+          <skipNexusStagingDeployMojo>false</skipNexusStagingDeployMojo>
+<!--           <tags>
             <localUsername>${env.USER}</localUsername>
             <javaVersion>${java.version}</javaVersion>
           </tags>
-        </configuration>
+ -->        </configuration>
       </plugin>
 
       <!-- for CLM -->

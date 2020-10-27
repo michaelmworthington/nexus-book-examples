@@ -1,0 +1,20 @@
+{
+  "name": "my_package",
+  "version": "1.0.12",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "mworthington",
+  "license": "ISC",
+  "dependencies": {
+    "hawk": "^3.1.0",
+    "jquery": "^2.2.4",
+    "lodash": "^4.7.0"
+  },
+  "publishConfig": {
+    "registry": "http://localhost:8083/nexus/repository/npm-hosted/"
+  }
+}
